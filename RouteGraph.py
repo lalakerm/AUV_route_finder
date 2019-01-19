@@ -43,7 +43,7 @@ class RouteGraph:
         for k in range(0, size - 1):
             for m in range(0, size):
                 for n in range(0, size):
-                    if shortest_length[m, k] + edges_length[m, n] < shortest_length[n][k + 1:size]:
+                    if (shortest_length[m, k] + edges_length[m, n] < shortest_length[n][k + 1:size]).all():
                         shortest_length[n, k + 1:size] = shortest_length[m, k] + edges_length[m, n]
         return shortest_length
 
