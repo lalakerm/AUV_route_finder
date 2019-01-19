@@ -1,0 +1,4 @@
+speed:
+battery life:
+charging time:
+scale:
