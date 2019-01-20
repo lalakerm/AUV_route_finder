@@ -1,24 +1,21 @@
 # RouteGraph represent route model in graph
 import numpy as np
 
-speed = 18
-battery_life = 4
-scale = 20
-start_t = (9, 2)
-end_t = (-7, -8)
-refill_t = ((7, 1), (8, 0), (5, -1), (1, -2), (2, -2), (0, -4), (-3, -5), (-5, -7), (-4, -3), (-6, -5))
-
 
 class RouteGraph:
-    def __init__(self, start, end, refill=()):  # refill - set of points (x,y), start(end) - set (x,y)
-        if len(refill):
-            self.coordinates = np.vstack([np.array(start),
-                                          np.vstack(refill),
-                                          np.array(end)])
+    def __init__(self, route, vehicle, scale=1):  # refill - set of points (x,y), start(end) - set (x,y)
+        if len(route.refill):
+            self.coordinates = np.vstack([np.array(route.start),
+                                          np.vstack(route.refill),
+                                          np.array(route.end)])
         else:
-            self.coordinates = np.vstack([np.array(start),
-                                          np.array(end)])
-        self.adjacency = adj_matrix_comp(self.coordinates)
+            self.coordinates = np.vstack([np.array(route.start),
+                                          np.array(route.end)])
+        self.scale = scale
+        self.adjacency = adj_matrix_comp(self.coordinates,
+                                         vehicle.speed,
+                                         vehicle.battery_life,
+                                         self.scale)
 
     def get_edges_weight(self):  # weights are equal to length from one vertex to another
         size = len(self.coordinates)
@@ -30,7 +27,7 @@ class RouteGraph:
                 elif self.adjacency[i, j] == 0:  # unreachable vertex ~ Inf distance -> Inf weight
                     edges_weight[i, j] = edges_weight[j, i] = np.Inf
                 else:
-                    distance = scale * np.linalg.norm(self.coordinates[j] - self.coordinates[i])
+                    distance = self.scale * np.linalg.norm(self.coordinates[j] - self.coordinates[i])
                     edges_weight[i, j] = edges_weight[j, i] = distance
         return edges_weight
 
@@ -65,7 +62,7 @@ class RouteGraph:
         return (final_route, shortest_length) if log else final_route
 
 
-def adj_matrix_comp(vertex_vector):  # computation of adjacency matrix with vector of vertex coordinates as input
+def adj_matrix_comp(vertex_vector, speed, battery_life, scale):  # computation of adjacency matrix with vector of vertex coordinates as input
     size = len(vertex_vector)
     adj_matrix = np.zeros([size, size], dtype=int)
     for i in range(size):
