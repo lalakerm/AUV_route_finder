@@ -1,4 +1,3 @@
-speed:
-battery life:
-charging time:
-scale:
+speed(km/h): 18
+battery life(h): 4
+charging time(min): 27
