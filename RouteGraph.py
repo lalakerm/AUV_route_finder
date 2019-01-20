@@ -20,7 +20,7 @@ class RouteGraph:
                                           np.array(end)])
         self.adjacency = adj_matrix_comp(self.coordinates)
 
-    def get_edges_weight(self):  # weights are equal to length from one point to another
+    def get_edges_weight(self):  # weights are equal to length from one vertex to another
         size = len(self.coordinates)
         edges_weight = np.zeros([size, size])  # matrix of edges weights
         for i in range(size):
@@ -34,7 +34,8 @@ class RouteGraph:
                     edges_weight[i, j] = edges_weight[j, i] = distance
         return edges_weight
 
-    def get_short_route(self):
+    def get_short_route(self, log=False):  # log allows to return matrix of shortest_length
+        final_route = list()
         edges_length = self.get_edges_weight()  # get matrix of edges weight
         size = len(edges_length)
         shortest_length = np.Inf * np.ones([size, size])  # i,j - shortest length to i vertex with no more than j edges
@@ -45,7 +46,23 @@ class RouteGraph:
                 for n in range(0, size):
                     if (shortest_length[m, k] + edges_length[m, n] < shortest_length[n][k + 1:size]).all():
                         shortest_length[n, k + 1:size] = shortest_length[m, k] + edges_length[m, n]
-        return shortest_length
+        # route to final exist => last row of shortest_length matrix has at least one numeric value
+        if np.array_equal(shortest_length[size - 1], size * [np.Inf]):
+            return tuple(final_route)  # tuple cast to avoid changes
+        else:  # final route computation (from final to start)
+            final_route.append(size)  # size == final vertex
+            min_distance = min(shortest_length[size - 1])  # min dist on last row of shortest_length matrix
+            comp_coord = size - 1
+            # -1 in range() so that i,j might be equal to 0
+            for i in range(size-1, -1, -1):
+                for j in range(size - 1, -1, -1):
+                    if np.isclose(min_distance, (shortest_length[j, i] + edges_length[j, comp_coord])) \
+                            and edges_length[j, comp_coord] != 0:
+                        final_route.append(j+1)
+                        min_distance = shortest_length[j, i]
+                        comp_coord = j
+                        break
+        return (final_route, shortest_length) if log else final_route
 
 
 def adj_matrix_comp(vertex_vector):  # computation of adjacency matrix with vector of vertex coordinates as input
@@ -54,7 +71,7 @@ def adj_matrix_comp(vertex_vector):  # computation of adjacency matrix with vect
     for i in range(size):
         for j in range(size):
             if i != j:  # avoid same vertices
-                distance = np.linalg.norm(vertex_vector[i]-vertex_vector[j])  # distance between two vertices
+                distance = np.linalg.norm(vertex_vector[i] - vertex_vector[j])  # distance between two vertices
                 if distance * scale < speed * battery_life:  # if vertex is reachable
                     adj_matrix[i, j] = adj_matrix[j, i] = 1
     return adj_matrix
