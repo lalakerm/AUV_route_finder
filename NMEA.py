@@ -4,13 +4,19 @@ import datetime
 
 
 class NMEA:
-    NMEA_template = '$UTHDG,{time},{dist},T,{angle},{is_end}'
+    NMEA_template = '$UTHDG,{time},{dist:.2f},T,{angle:.2f},{is_end}'
 
-    def __init__(self, time, dist, turn, angle):
+    def __init__(self, time, dist, angle, is_end=False):
         self.time = time
         self.dist = dist
-        self.turn = turn
+        self.is_end = is_end
         self.angle = angle
+
+    def __str__(self):
+        if self.is_end:
+            return NMEA.NMEA_template.format(time=self.time, dist=self.dist, angle=self.angle, is_end='E')
+        else:
+            return NMEA.NMEA_template.format(time=self.time, dist=self.dist, angle=self.angle, is_end='N')
 
 
 def get_angles(coordinates, route=()):
@@ -43,5 +49,6 @@ def get_times(start_time, edges_weight, speed, route, charging_time):  # start_t
         time = (datetime.datetime.combine(datetime.date(1, 1, 1), time)
                 + datetime.timedelta(
                     minutes=add_minutes + charging_time)).time()  # time of arrival+charging at the vertex
+        time = time.replace(microsecond=0)
         times.append(time)
     return times
