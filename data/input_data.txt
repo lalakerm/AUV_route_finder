@@ -1,0 +1,22 @@
+Route info:
+start point: (9, 2)
+final point: (-7, -8)
+refuel points:
+(7, 1)
+(8, 0)
+(5, -1)
+(1, -2)
+(2, -2)
+(0, -4)
+(-3, -5)
+(-5, -7)
+(-4, -3)
+(-6, -5)
+---------------------
+Grid info:
+scale(1:km): 20
+---------------------
+Vehicle info:
+speed(km/h): 18
+battery life(h): 4
+charging time(min): 27
