@@ -10,10 +10,11 @@ route = route_graph.get_short_route()
 
 plt.grid(b=True, which='both', alpha=0.2), plt.minorticks_on()
 
-for i in range(0, len(route)-1):  # route plot
-    x = coordinates[route[i]-1][0], coordinates[route[i+1]-1][0]  # x = (x1,x2)
-    y = coordinates[route[i]-1][1], coordinates[route[i+1]-1][1]  # y = (y1, y2)
-    plt.plot(x, y, color='blue', alpha=0.8)
+if route:
+    for i in range(0, len(route)-1):  # route plot
+        x = coordinates[route[i]-1][0], coordinates[route[i+1]-1][0]  # x = (x1,x2)
+        y = coordinates[route[i]-1][1], coordinates[route[i+1]-1][1]  # y = (y1, y2)
+        plt.plot(x, y, color='blue', alpha=0.8)
 adj_temp = np.ndarray.copy(adj_matrix)  # copy is needed to modify adj_matrix with mock values for route vertices
 for i in range(0, len(route)-1):
     adj_temp[route[i]-1, route[i+1]-1] = adj_temp[route[i+1]-1, route[i]-1] = 0  # to prevent edges between route points
