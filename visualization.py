@@ -8,7 +8,6 @@ coordinates = route_graph.coordinates
 adj_matrix = route_graph.adjacency
 route = route_graph.get_short_route()
 
-#plt.axis(xmin=-10, xmax=10, ymin=-10, ymax=10) - option to add axis limit
 plt.grid(b=True, which='both', alpha=0.2), plt.minorticks_on()
 
 for i in range(0, len(route)-1):  # route plot
