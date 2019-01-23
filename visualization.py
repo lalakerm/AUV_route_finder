@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from class_tester import route_graph
@@ -8,6 +9,7 @@ coordinates = route_graph.coordinates
 adj_matrix = route_graph.adjacency
 route = route_graph.get_short_route()
 
+IMAGE = 'route_graph.png'
 ROUTE_attr = {'color': 'blue', 'alpha': 0.8}
 NON_ROUTE_EDGE_attr = {'color': 'red', 'linestyle': '--', 'alpha': 0.8}
 VERTEX_attr = {'s': 270}
@@ -48,4 +50,8 @@ plt.text(plt.xlim()[1], plt.ylim()[1]+0.5, 'Scale 1:' + str(scale) + ' km', hori
          verticalalignment='top')
 plt.xlabel('x (km)')
 plt.ylabel('y (km)')
-plt.show()
+plt.savefig(IMAGE)
+if os.path.isfile(os.getcwd() + '/output/' + IMAGE):
+    os.remove(os.getcwd() + '/output/' + IMAGE)
+os.rename(IMAGE, os.getcwd() + '/output/' + IMAGE)
+
