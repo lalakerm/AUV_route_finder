@@ -1,12 +1,12 @@
 import optparse
 
-import NMEA
-from visualization import make_graph_plot
-from txt_parse import txt_parse
-from pdf_create import make_pdf_report
-from Route import Route
-from Vehicle import Vehicle
-from RouteGraph import RouteGraph
+from NMEA_modules import NMEA
+from NMEA_modules.visualization import make_graph_plot
+from file_manipulation_modules.txt_parse import txt_parse
+from file_manipulation_modules.pdf_create import make_pdf_report
+from NMEA_modules.Route import Route
+from file_manipulation_modules.Vehicle import Vehicle
+from NMEA_modules.RouteGraph import RouteGraph
 
 
 def main():
