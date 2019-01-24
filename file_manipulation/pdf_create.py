@@ -1,7 +1,7 @@
 import datetime
 import os, shutil
 from fpdf import FPDF
-from NMEA_modules.visualization import IMAGE
+from NMEA.visualization import IMAGE
 
 OUTPUT_PDF = 'report.pdf'  # pdf file name
 
