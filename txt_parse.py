@@ -7,7 +7,7 @@ INFO_POINTS = ('start point', 'final point', 'refuel points',
 
 def txt_parse(filepath):
     try:
-        file = open(os.getcwd() + '/data/' + filepath, 'r')
+        file = open(os.getcwd() + filepath, 'r')
         text = file.readlines()
         if check_structure(text, INFO_POINTS):
             data = dict()
@@ -15,11 +15,11 @@ def txt_parse(filepath):
                 for line in text:
                     if p in line:
                         data[p] = get_value(line, p)
+            return data
         else:
             print('Check file structure.')
     except FileNotFoundError:
         print('File not found, check directory.')
-    return data
 
 
 def check_structure(text, info_points):  # check file structure
@@ -32,13 +32,9 @@ def check_structure(text, info_points):  # check file structure
             return False
     return True
 
+
 def get_value(line, p):
     if p in INFO_POINTS[0:3]:
-        return eval(line[line.find('('):line.rfind(')')+1])
+        return eval(line[line.find('('):line.rfind(')') + 1])
     else:
         return [int(s) for s in line.split() if s.isdigit()][0]
-
-
-if __name__ == '__main__':
-    print(txt_parse('input_data.txt'))
-

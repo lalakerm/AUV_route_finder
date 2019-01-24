@@ -37,6 +37,22 @@ def get_angles(coordinates, route=()):
     return angles
 
 
+def get_nmeas(angles, times, final_route, edge_weights):
+    nmea_list = list()
+    for i, t in enumerate(times):
+        a = angles[i]
+        final_route_inv = list.copy(final_route)  # copy final_route to avoid changes to original
+        final_route_inv.reverse()
+        matrix_ind = final_route[i] - 1, final_route[i + 1] - 1  # index of edge_weights matrix
+        if i == len(times) - 1:
+            nmea = NMEA(t, edge_weights[matrix_ind], a)
+        else:  # end of the route
+            nmea = NMEA(t, edge_weights[matrix_ind], a, is_end=True)
+        nmea_list.append(nmea)
+    nmea_str = tuple(str(nmea) for nmea in nmea_list)
+    return nmea_str
+
+
 def get_times(start_time, edges_weight, speed, route, charging_time):  # start_time format HH.MM.SS
     times = list()
     time = datetime.time(*list(map(int, start_time.split('.'))))
