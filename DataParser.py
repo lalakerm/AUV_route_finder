@@ -1,0 +1,2 @@
+class DataParse:
+    pass
