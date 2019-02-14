@@ -1,37 +1,62 @@
-# RouteGraph represent route model in graph
+"""
+This module provides Route Graph class, that
+allows to represent graph model(as an adjacency matrix),
+that's used to find optimal route among all the other possible.
+"""
 import numpy as np
 
 
 class RouteGraph:
     def __init__(self, route, vehicle, scale=1):  # refill - set of points (x,y), start(end) - set (x,y)
         if len(route.refill):
-            self.coordinates = np.vstack([np.array(route.start),
+            self._coordinates = np.vstack([np.array(route.start),
                                           np.vstack(route.refill),
                                           np.array(route.end)])
         else:
-            self.coordinates = np.vstack([np.array(route.start),
+            self._coordinates = np.vstack([np.array(route.start),
                                           np.array(route.end)])
-        self.scale = scale
-        self.adjacency = adj_matrix_comp(self.coordinates,
+        self._scale = scale
+        self._adjacency = self.adj_matrix_comp(self._coordinates,
                                          vehicle.speed,
                                          vehicle.battery_life,
-                                         self.scale)
+                                         self._scale)
 
-    def get_edges_weight(self):  # weights are equal to length from one vertex to another
-        size = len(self.coordinates)
+    @property
+    def coordinates(self):
+        return self._coordinates
+
+    @property
+    def adjacency(self):
+        return self._adjacency
+
+    def get_edges_weight(self):
+        """
+
+        Return matrix of edges weights, which are equal to length
+        from one vertex to another
+
+        """
+        # weights are equal to length from one vertex to another
+        size = len(self._coordinates)
         edges_weight = np.zeros([size, size])  # matrix of edges weights
         for i in range(size):
             for j in range(size):
                 if i == j:  # no distance from vertex to each self
                     pass
-                elif self.adjacency[i, j] == 0:  # unreachable vertex ~ Inf distance -> Inf weight
+                elif self._adjacency[i, j] == 0:  # unreachable vertex ~ Inf distance -> Inf weight
                     edges_weight[i, j] = edges_weight[j, i] = np.Inf
                 else:
-                    distance = self.scale * np.linalg.norm(self.coordinates[j] - self.coordinates[i])
+                    distance = self._scale * np.linalg.norm(self._coordinates[j] - self._coordinates[i])
                     edges_weight[i, j] = edges_weight[j, i] = distance
         return edges_weight
 
-    def get_short_route(self, log=False):  # log allows to return matrix of shortest_length
+    def get_short_route(self, log=False):
+        """
+
+        Return shortest route from start to end using Bellman-Ford algorithm,
+        with optional log opportunity.
+
+        """
         final_route = list()
         edges_length = self.get_edges_weight()  # get matrix of edges weight
         size = len(edges_length)
@@ -61,14 +86,29 @@ class RouteGraph:
                         break
         return (final_route, shortest_length) if log else final_route
 
+    @staticmethod
+    # computation of adjacency matrix with vector of vertex coordinates as input
+    def adj_matrix_comp(vertex_vector, speed, battery_life, scale):
+        """
 
-def adj_matrix_comp(vertex_vector, speed, battery_life, scale):  # computation of adjacency matrix with vector of vertex coordinates as input
-    size = len(vertex_vector)
-    adj_matrix = np.zeros([size, size], dtype=int)
-    for i in range(size):
-        for j in range(size):
-            if i != j:  # avoid same vertices
-                distance = np.linalg.norm(vertex_vector[i] - vertex_vector[j])  # distance between two vertices
-                if distance * scale < speed * battery_life:  # if vertex is reachable
-                    adj_matrix[i, j] = adj_matrix[j, i] = 1
-    return adj_matrix
+        Return graph representation as a adjacency matrix
+
+        >>> battery_life = 5
+        >>> scale = 10
+        >>> size = 10
+        >>> speed = 15
+        >>> vertex_vector = np.array([[10, 10], [8, 8], [5,5]])
+        >>> RouteGraph.adj_matrix_comp(vertex_vector, speed, battery_life, scale)
+        array([[0, 1, 1],
+               [1, 0, 1],
+               [1, 1, 0]])
+        """
+        size = len(vertex_vector)
+        adj_matrix = np.zeros([size, size], dtype=int)
+        for i in range(size):
+            for j in range(size):
+                if i != j:  # avoid same vertices
+                    distance = np.linalg.norm(vertex_vector[i] - vertex_vector[j])  # distance between two vertices
+                    if distance * scale < speed * battery_life:  # if vertex is reachable
+                        adj_matrix[i, j] = adj_matrix[j, i] = 1
+        return adj_matrix
