@@ -17,9 +17,9 @@ class RouteGraph:
                                           np.array(route.end)])
         self._scale = scale
         self._adjacency = self.adj_matrix_comp(self._coordinates,
-                                         vehicle.speed,
-                                         vehicle.battery_life,
-                                         self._scale)
+                                               vehicle.speed,
+                                               vehicle.battery_life,
+                                               self._scale)
 
     @property
     def coordinates(self):

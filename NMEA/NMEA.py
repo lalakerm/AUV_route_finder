@@ -1,5 +1,5 @@
 """
-This module provide NMEA class for a single message,
+This module provides NMEA class for a single message,
 NMEA object consist of time, distance, angle and boolean variable
 to determine if message is last.
 """

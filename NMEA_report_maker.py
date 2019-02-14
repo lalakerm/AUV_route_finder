@@ -9,7 +9,7 @@ from NMEA.Vehicle import Vehicle
 from NMEA.RouteGraph import RouteGraph
 
 
-def parser_determ():
+def parser_init():
     parser = optparse.OptionParser(usage='NMEA_report_maker.py [options] [input_file] [output_path]')
     parser.add_option('-p', '--picture',
                       dest='picture',
@@ -21,16 +21,17 @@ def parser_determ():
 
 
 def main():
-    parser = parser_determ()
+    parser = parser_init()
     opts, args = parser.parse_args()
     input_file, output = args[0], args[1]
     data = txt_parse(input_file)
-    route = Route(data['start point'],
-                  data['final point'],
-                  data['refuel points'])
-    vehicle = Vehicle(data['speed(km/h)'],
-                      data['battery life(h)'],
-                      data['charging time(min)'])
+    route = Route(start=data['start point'],
+                  end=data['final point'],
+                  refill=data['refuel points'])
+    vehicle = Vehicle(speed=data['speed(km/h)'],
+                      battery_life=data['battery life(h)'],
+                      charging_time=data['charging time(min)'])
+    vehicle.speed = 45
     route_graph = RouteGraph(route, vehicle,
                              scale=data['scale(1:km)'])
     final_route = route_graph.get_short_route()
