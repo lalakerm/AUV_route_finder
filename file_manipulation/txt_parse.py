@@ -1,3 +1,7 @@
+"""
+This module provides static methods to parse .txt file
+with data about EV and route coordinates
+"""
 import os
 
 INFO_POINTS = ('start point', 'final point', 'refuel points',
@@ -6,6 +10,9 @@ INFO_POINTS = ('start point', 'final point', 'refuel points',
 
 
 def txt_parse(filepath):
+    """
+    .txt file parser with given filepath
+    """
     try:
         file = open(os.getcwd() + filepath, 'r')
         text = file.readlines()
@@ -22,7 +29,11 @@ def txt_parse(filepath):
         print('File not found, check directory.')
 
 
-def check_structure(text, info_points):  # check file structure
+def check_structure(text, info_points):
+    """
+    Check .txt file structure (True - full structure)
+    """
+    # check file structure
     for p in info_points:
         i = 0  # number of info_point occurrence in file
         for line in text:
@@ -34,6 +45,9 @@ def check_structure(text, info_points):  # check file structure
 
 
 def get_value(line, p):
+    """
+    Get value from a given line and info point
+    """
     if p in INFO_POINTS[0:3]:
         return eval(line[line.find('('):line.rfind(')') + 1])
     else:

@@ -1,3 +1,7 @@
+"""
+This module provides static method to create
+pdf report with option to save picture
+"""
 import datetime
 import os, shutil
 from fpdf import FPDF
