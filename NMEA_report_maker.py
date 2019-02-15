@@ -31,7 +31,6 @@ def main():
     vehicle = Vehicle(speed=data['speed(km/h)'],
                       battery_life=data['battery life(h)'],
                       charging_time=data['charging time(min)'])
-    vehicle.speed = 45
     route_graph = RouteGraph(route, vehicle,
                              scale=data['scale(1:km)'])
     final_route = route_graph.get_short_route()
