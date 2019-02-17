@@ -1,3 +1,6 @@
+"""
+This module provides static method to create matplot figure with
+"""
 import numpy as np
 import os
 import matplotlib.pyplot as plt
@@ -11,6 +14,9 @@ GRID_attr = {'which': 'both', 'alpha': 0.2}
 
 
 def make_graph_plot(coordinates, adj_matrix, route, scale, output):
+    """
+    Creates a plot with graph visual representation as .png file
+    """
     plt.grid(b=True, **GRID_attr), plt.minorticks_on()
     if route:
         for i in range(0, len(route) - 1):  # route plot

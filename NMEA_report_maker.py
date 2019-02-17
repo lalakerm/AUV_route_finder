@@ -1,7 +1,7 @@
 import optparse
 
 from NMEA.NMEA import NMEA
-from NMEA.visualization import make_graph_plot
+from file_manipulation.visualization import make_graph_plot
 from file_manipulation.txt_parse import txt_parse
 from file_manipulation.pdf_create import make_pdf_report
 from NMEA.Route import Route
@@ -10,6 +10,9 @@ from NMEA.RouteGraph import RouteGraph
 
 
 def parser_init():
+    """
+    Initialize parser for command line option
+    """
     parser = optparse.OptionParser(usage='NMEA_report_maker.py [options] [input_file] [output_path]')
     parser.add_option('-p', '--picture',
                       dest='picture',
@@ -21,6 +24,9 @@ def parser_init():
 
 
 def main():
+    """
+    Entry point of a program
+    """
     parser = parser_init()
     opts, args = parser.parse_args()
     input_file, output = args[0], args[1]
