@@ -21,7 +21,7 @@ def make_pdf_report(pic_opt, nmea_str, output):
              txt='NMEA report, created on {utc}'.format(
                  utc=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), align='C')
     pdf.ln(10)
-    pdf.cell(200, 10, txt='with NMEA_report_maker.py', align='C')
+    pdf.cell(200, 10, txt='with auv_route_finder.py', align='C')
     if pic_opt:
         pdf.ln(150)
         pdf.image(os.getcwd()+output+IMAGE, x=10, y=30, w=195)  # visual representation

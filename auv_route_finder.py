@@ -4,16 +4,16 @@ from NMEA.NMEA import NMEA
 from file_manipulation.visualization import make_graph_plot
 from file_manipulation.txt_parse import txt_parse
 from file_manipulation.pdf_create import make_pdf_report
-from NMEA.Route import Route
-from NMEA.Vehicle import Vehicle
-from NMEA.RouteGraph import RouteGraph
+from Route.Route import Route
+from Vehicle.Vehicle import Vehicle
+from Route.RouteGraph import RouteGraph
 
 
 def parser_init():
     """
     Initialize parser for command line option
     """
-    parser = optparse.OptionParser(usage='NMEA_report_maker.py [options] [input_file] [output_path]')
+    parser = optparse.OptionParser(usage='auv_route_finder.py [options] [input_file] [output_path]')
     parser.add_option('-p', '--picture',
                       dest='picture',
                       action='store_true',
