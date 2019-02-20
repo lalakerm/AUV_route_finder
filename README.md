@@ -1,9 +1,9 @@
 # Overview
 The program simulates process of building optimal route for marine electric AUV (autonomous underwater vehicle)  
 with given start and final coordinates with the usage of recharge points. All information about the vehicle and the route  
-is written in the input file (see /data_example/input/input_data.txt). Program output consists of final report (as .pdf)  
+is written in the input file (see /data/input/input_data.txt). Program output consists of final report (as .pdf)  
 with visual representation (also saves separately in .png file) and a list of control messages (NMEA-0183 protocol).  
-Output examples are located in /data_example/output/.
+Output examples are located in /data/output/.
 
 # Tools
 - Python v3.7
