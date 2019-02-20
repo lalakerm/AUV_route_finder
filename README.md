@@ -14,7 +14,7 @@ Output examples are located in /data_example/output/.
 # Program usage
 ```
 Template: NMEA_report_maker.py [options] [input_file] [output_path]  
-Example: NMEA_report_maker.py -p data\input\input_data.txt data\output\  
+Example: NMEA_report_maker.py -p \data\input\input_data.txt \data\output\  
 
 Options:  
   -h, --help     show this help message and exit  
